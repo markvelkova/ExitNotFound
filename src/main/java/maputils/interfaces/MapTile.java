@@ -1,4 +1,4 @@
 package maputils.interfaces;
 
-public interface IMapTile {
+public interface MapTile {
 }

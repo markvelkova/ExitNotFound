@@ -1,16 +1,16 @@
 package maputils;
 
-import maputils.interfaces.IMapTile;
-import maputils.interfaces.INonEmptyMapTile;
-import maputils.interfaces.ITopObject;
+import maputils.interfaces.MapTile;
+import maputils.interfaces.NonEmptyMapTile;
+import maputils.interfaces.TopObject;
 import toolkit.Player;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Map {
 
-    private IMapTile[][] mapWithoutTopObjects;
-    private ITopObject[][] mapOfTopObjects;
+    private MapTile[][] mapWithoutTopObjects;
+    private TopObject[][] mapOfTopObjects;
     public final int height;
     public final int width;
 
@@ -18,8 +18,8 @@ public class Map {
         this.width = width;
         this.height = height;
 
-        mapWithoutTopObjects = new IMapTile[height][width];
-        mapOfTopObjects = new ITopObject[height][width];
+        mapWithoutTopObjects = new MapTile[height][width];
+        mapOfTopObjects = new TopObject[height][width];
     }
 
     public Coord initializeAndGetPlayer(BufferedReader reader) throws IOException {
@@ -46,7 +46,7 @@ public class Map {
         return result;
     }
 
-    private IMapTile readMapTile(int c) {
+    private MapTile readMapTile(int c) {
         if (c == GameSymbols.GOOD) return new Good();
         else if (c == GameSymbols.BAD) return new Bad();
         else return new Wall();
@@ -62,7 +62,7 @@ public class Map {
     }
 
     public boolean isTypeAssignable(int i, int j, Class<?> t) {
-        IMapTile obj = mapWithoutTopObjects[i][j];
+        MapTile obj = mapWithoutTopObjects[i][j];
         return obj != null && t.isAssignableFrom(obj.getClass());
     }
 
@@ -80,7 +80,7 @@ public class Map {
                         case east  -> sb.append('>');
                     }
                     sb.append(' ');
-                } else if (mapWithoutTopObjects[i][j] instanceof INonEmptyMapTile) {
+                } else if (mapWithoutTopObjects[i][j] instanceof NonEmptyMapTile) {
                     sb.append((char) GameSymbols.WALL);
                     sb.append(' ');
                 } else {

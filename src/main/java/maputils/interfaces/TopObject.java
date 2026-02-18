@@ -1,4 +1,4 @@
 package maputils.interfaces;
 
-public interface ITopObject {
+public interface TopObject {
 }

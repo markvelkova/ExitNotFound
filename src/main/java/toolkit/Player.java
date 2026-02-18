@@ -1,10 +1,10 @@
 package toolkit;
-import maputils.interfaces.IMovableMapObject;
-import maputils.interfaces.ITopObject;
+import maputils.interfaces.MovableMapObject;
+import maputils.interfaces.TopObject;
 import maputils.Map.Coord;
 import maputils.Map;
 
-public class Player implements IMovableMapObject, ITopObject {
+public class Player implements MovableMapObject, TopObject {
 
     public enum FacingDirection {west, north, east, south}
 

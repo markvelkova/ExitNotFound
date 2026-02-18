@@ -1,8 +1,8 @@
 package maputils;
 
-import maputils.interfaces.IMapTile;
-import maputils.interfaces.INonEmptyMapTile;
+import maputils.interfaces.MapTile;
+import maputils.interfaces.NonEmptyMapTile;
 
-public class Wall implements INonEmptyMapTile, IMapTile
+public class Wall implements NonEmptyMapTile, MapTile
 {
 }

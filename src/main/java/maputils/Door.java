@@ -1,11 +1,11 @@
 package maputils;
 
-import maputils.interfaces.IFoundableObject;
-import maputils.interfaces.ITopObject;
+import maputils.interfaces.FoundableObject;
+import maputils.interfaces.TopObject;
 
-public class Door implements IFoundableObject, ITopObject
+public class Door implements FoundableObject, TopObject
 {
-    public void Find()
+    public void find()
     {
         //TODO implement
     }

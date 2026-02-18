@@ -1,6 +1,6 @@
 package maputils;
 
-import maputils.interfaces.IEmptyMapTile;
+import maputils.interfaces.EmptyMapTile;
 
-public class Good implements IEmptyMapTile {
+public class Good implements EmptyMapTile {
 }
