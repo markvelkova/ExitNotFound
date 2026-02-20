@@ -16,7 +16,7 @@ public class UnsettlingMessenger
                 """
                 My sock is kinda slimy, have I stepped on a slug or what?
                 """,
-                """
+                """ 
                 sshhhhhuuuuum
         
                 What was that?
@@ -65,7 +65,7 @@ public class UnsettlingMessenger
         return list;
 
     }
-    public static String GetUnsettlingMesssage()
+    public static String getUnsettlingMesssage()
     {
         ArrayList <String> unsettlingMessages = generateListOfUnsettlingMessages();
         Random random = new Random();

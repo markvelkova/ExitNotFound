@@ -1,4 +1,5 @@
 package toolkit;
+import enums.Direction;
 import maputils.interfaces.MovableMapObject;
 import maputils.interfaces.TopObject;
 import maputils.Map.Coord;
