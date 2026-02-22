@@ -1,5 +1,5 @@
 package enums;
 
 public enum CommandType {
-    ok, stats, commands, go, save, end, empty, invalid, map
+    ok, stats, commands, go, save, exit, empty, invalid, map
 }

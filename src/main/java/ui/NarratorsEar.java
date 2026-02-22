@@ -10,15 +10,24 @@ public class NarratorsEar {
 
     public static BufferedReader listener;
 
-    public static String getLine() throws IOException {
-        return listener.readLine();
+    public static String getLine() {
+        try {
+            return listener.readLine();
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
-    public static Command getCommand() throws IOException {
+    public static Command getCommand() {
 
         NarratorsMouth.write(">> ");
 
-        String input = listener.readLine();
+        String input = "invalid";
+        try{
+            input = listener.readLine();
+        } catch(IOException e){
+            // input will stay invalid
+        }
 
         if (input == null || input.isEmpty()) {
             return new Command(CommandType.empty);

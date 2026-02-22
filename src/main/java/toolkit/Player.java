@@ -1,5 +1,6 @@
 package toolkit;
 import enums.Direction;
+import enums.PlayerState;
 import maputils.interfaces.MovableMapObject;
 import maputils.interfaces.TopObject;
 import maputils.Map.Coord;
@@ -14,6 +15,8 @@ public class Player implements MovableMapObject, TopObject {
     private String name;
     private int health;
     private int numberOfUnsettlingMessagesHeard;
+    private boolean foundTheDoorAndLeftTheGame;
+    public PlayerState state;
 
     public Player(String name, int health) {
         this.name = name;
@@ -21,7 +24,10 @@ public class Player implements MovableMapObject, TopObject {
         this.numberOfUnsettlingMessagesHeard = 0;
         this.facing = FacingDirection.north;
         this.coord = new Coord(0, 0);
+        this.foundTheDoorAndLeftTheGame = false;
+        this.state = PlayerState.playing;
     }
+    public boolean isFoundTheDoorAndLeftTheGame() { return this.foundTheDoorAndLeftTheGame; }
 
     public FacingDirection getFacing() { return facing; }
     public void setFacing(FacingDirection facing) { this.facing = facing; }

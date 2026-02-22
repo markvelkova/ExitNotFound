@@ -2,6 +2,7 @@ package ui;
 
 import commands.CommandScholar;
 import enums.CommandType;
+import maputils.interfaces.FoundableObject;
 import toolkit.Player;
 
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ public class NarratorsMouth {
     public static PrintWriter speaker;
     private static void printAndFlush(String text) {
         speaker.print(text);
+        speaker.print("\n");
         speaker.flush();
     }
 
@@ -121,6 +123,22 @@ public class NarratorsMouth {
                 are you sure you saved it?
                 """);
     }
+    public static void askForAnotherGame() {
+        printAndFlush("""
+                Do you want to send another hero in this dark hell?
+                """);
+
+    }
+
+    public static void announceFindingObject(FoundableObject o) {
+        printAndFlush("You found" + o.toString() + "!\n");
+    }
+    public static void announceWin(Player p) {
+        printAndFlush("Congratulations " + p.getName() + "! You won!\n");
+    }
+    public static void announceFailure(Player p) {
+        printAndFlush(p.getName() + " died in the darkness... \n\n requiescat in pace");
+    }
 
     public static void pathBlocked() {
         printAndFlush("""
@@ -214,7 +232,7 @@ public class NarratorsMouth {
 
         """);
     }
-    public static void printUnsettlingMessage() {
+    public static void printUnsettlingMessage(Player p) {
         printAndFlush("""
             ¨.¨.¨.¨.¨.¨.¨.¨.¨.¨.¨.
             """ +
@@ -222,5 +240,6 @@ public class NarratorsMouth {
                 """
                 ¨.¨.¨.¨.¨.¨.¨.¨.¨.¨.¨.
                 """);
+        p.setNumberOfUnsettlingMessagesHeard(p.getNumberOfUnsettlingMessagesHeard()+1);
     }
 }

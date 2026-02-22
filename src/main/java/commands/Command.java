@@ -38,7 +38,7 @@ public class Command {
 
             case ok:
             case stats:
-            case end:
+            case exit:
             case save:
             case map:
                 return parameters == null;

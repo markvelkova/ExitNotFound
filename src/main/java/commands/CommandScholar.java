@@ -38,9 +38,9 @@ public class CommandScholar {
                         
                         """;
 
-            case end:
+            case exit:
                 return """
-                        end
+                        exit
                         parameters: none
                         effect: by using this command, you are suggesting ending the game, do not worry, you will be asked if you really want it anyway
                         
@@ -72,7 +72,7 @@ public class CommandScholar {
             case ok:
             case stats:
             case commands:
-            case end:
+            case exit:
             case save:
             case go:
             case map:
