@@ -2,6 +2,7 @@ package actions;
 
 import maputils.Map;
 import toolkit.Player;
+import ui.NarratorsMouth;
 
 import java.io.Writer;
 
@@ -20,7 +21,7 @@ public class DisplayMap extends Action {
     @Override
     public boolean execute() {
         try {
-            writer.write(map.getForDisplayWholeMap(player));
+            NarratorsMouth.printMap(map.getForDisplayWholeMap(player));
         } catch (Exception e) {
             return false;
         }

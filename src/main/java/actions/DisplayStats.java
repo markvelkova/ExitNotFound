@@ -21,7 +21,7 @@ public class DisplayStats extends Action {
     @Override
     public boolean execute() {
         if (supportedCommands.contains(command.getType())) {
-            NarratorsMouth.write(p.toString());
+            NarratorsMouth.printStats(p.getPrintableStats());
             return true;
         }
         return false;

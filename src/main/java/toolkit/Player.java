@@ -29,6 +29,10 @@ public class Player implements MovableMapObject, TopObject {
     }
     public boolean isFoundTheDoorAndLeftTheGame() { return this.foundTheDoorAndLeftTheGame; }
 
+    public String getPrintableStats() {
+        return toString();
+    }
+
     public FacingDirection getFacing() { return facing; }
     public void setFacing(FacingDirection facing) { this.facing = facing; }
 

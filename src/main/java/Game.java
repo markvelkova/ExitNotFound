@@ -11,7 +11,6 @@ import ui.NarratorsEar;
 import ui.NarratorsMouth;
 
 import java.io.*;
-import java.nio.Buffer;
 
 public class Game {
     private Player p;
@@ -65,7 +64,7 @@ public class Game {
             return;
         }
         // play the round
-        handler.handleAction(handler.createAction(c));
+        handler.executeAction(handler.createAction(c));
         NarratorsMouth.printUnsettlingMessage(p);
 
         // win, lose or continue
@@ -76,7 +75,7 @@ public class Game {
         NarratorsMouth.welcome();
         NarratorsMouth.askAboutLoadingOldGame();
 
-        if (handler.handleAction(new Answer(NarratorsEar.getCommand()))) // if player wrote ok
+        if (handler.executeAction(new Answer(NarratorsEar.getCommand()))) // if player wrote ok
             phase = GamePhase.loading;
         else
             phase = GamePhase.nameAsking;
@@ -88,14 +87,14 @@ public class Game {
 
         if (GameLoaderAndSaver.load(gameFileName, p)) {
             NarratorsMouth.announceSuccessfulLoading();
-            phase = GamePhase.tutorial;
+            phase = GamePhase.game;
             return true;
         }
         return false;
     }
     public void handleFailedLoading() {
             NarratorsMouth.announceFailedLoading();
-            if (!handler.handleAction(new Answer(NarratorsEar.getCommand())))
+            if (!handler.executeAction(new Answer(NarratorsEar.getCommand())))
                 phase = GamePhase.nameAsking;
     }
     public boolean trySaveGame() {
@@ -110,7 +109,7 @@ public class Game {
     }
     public void handleFailedSaving() {
         NarratorsMouth.announceFailedSaving();
-        if (!handler.handleAction(new Answer(NarratorsEar.getCommand()))) {
+        if (!handler.executeAction(new Answer(NarratorsEar.getCommand()))) {
             NarratorsMouth.backInTheGame();
             phase = GamePhase.game;
         }
@@ -121,7 +120,7 @@ public class Game {
         p.setName(NarratorsEar.getLine());
         NarratorsMouth.askAboutTutorial(p);
 
-        if (handler.handleAction(new Answer(NarratorsEar.getCommand())))
+        if (handler.executeAction(new Answer(NarratorsEar.getCommand())))
             phase = GamePhase.tutorial;
         else
             phase = GamePhase.game;
@@ -132,7 +131,7 @@ public class Game {
     }
     public void exitGame() {
         NarratorsMouth.askForEndConfirmation();
-        if (handler.handleAction(new Answer(NarratorsEar.getCommand())))
+        if (handler.executeAction(new Answer(NarratorsEar.getCommand())))
             gameEnded = true;
         else
             phase = GamePhase.game;
@@ -147,7 +146,7 @@ public class Game {
     }
     public boolean askIfAnotherGameIsWanted() {
         NarratorsMouth.askForAnotherGame();
-        return handler.handleAction(new Answer(NarratorsEar.getCommand()));
+        return handler.executeAction(new Answer(NarratorsEar.getCommand()));
     }
 
     public static void main(String[] args) {
@@ -227,7 +226,7 @@ public class Game {
                     NarratorsMouth.welcome();
                     NarratorsMouth.askAboutLoadingOldGame();
 
-                    if (handler.handleAction(
+                    if (handler.executeAction(
                             new Answer(NarratorsEar.getCommand())))
                         phase = GamePhase.loading;
                     else
@@ -245,7 +244,7 @@ public class Game {
                     else {
                         NarratorsMouth.announceFailedLoading();
 
-                        if (!handler.handleAction(
+                        if (!handler.executeAction(
                                 new Answer(NarratorsEar.getCommand())))
                             phase = GamePhase.nameAsking;
                     }
@@ -257,7 +256,7 @@ public class Game {
                     p.setName(NarratorsEar.getLine());
                     NarratorsMouth.askAboutTutorial(p);
 
-                    if (handler.handleAction(
+                    if (handler.executeAction(
                             new Answer(NarratorsEar.getCommand())))
                         phase = GamePhase.tutorial;
                     else
@@ -284,7 +283,7 @@ public class Game {
                         break;
                     }
                     // play the round
-                    handler.handleAction(handler.createAction(c));
+                    handler.executeAction(handler.createAction(c));
                     NarratorsMouth.printUnsettlingMessage(p);
 
                     // win, lose or continue
@@ -309,7 +308,7 @@ public class Game {
                     else {
                         NarratorsMouth.announceFailedSaving();
 
-                        if (!handler.handleAction(
+                        if (!handler.executeAction(
                                 new Answer(NarratorsEar.getCommand()))) {
 
                             NarratorsMouth.backInTheGame();
@@ -319,7 +318,7 @@ public class Game {
                     break;
                 case exited:
                     NarratorsMouth.askForEndConfirmation();
-                    if (handler.handleAction(
+                    if (handler.executeAction(
                             new Answer(NarratorsEar.getCommand())))
                         gameEnded = true;
                     else

@@ -1,7 +1,6 @@
 package commands;
 
 import actions.*;
-import enums.CommandType;
 import enums.Direction;
 import maputils.Map;
 import toolkit.Player;
@@ -17,21 +16,8 @@ public class CommandHandler {
         this.map = m;
     }
 
-    public boolean handleAction(Action act) {
-
-        // C#:
-        // act.GetType() == typeof(Answer)
-
-        // Java:
-        if (act instanceof Answer q) {
-            return handleQuestion(q);
-        }
-
+    public boolean executeAction(Action act) {
         return act.execute();
-    }
-
-    private boolean handleQuestion(Answer q) {
-        return q.execute();
     }
 
     public Action createAction(Command command) {
