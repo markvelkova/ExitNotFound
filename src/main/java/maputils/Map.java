@@ -1,15 +1,15 @@
 package maputils;
 
-import maputils.interfaces.FoundableObject;
-import maputils.interfaces.MapTile;
-import maputils.interfaces.NonEmptyMapTile;
-import maputils.interfaces.TopObject;
+import maputils.factories.BadTileFactory;
+import maputils.factories.GoodTileFactory;
+import maputils.interfaces.*;
 import toolkit.Player;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Map {
-
+    private GoodTileFactory goodFact;
+    private BadTileFactory badFact;
     private MapTile[][] mapWithoutTopObjects;
     private TopObject[][] mapOfTopObjects;
     public final int height;
@@ -21,6 +21,9 @@ public class Map {
 
         mapWithoutTopObjects = new MapTile[height][width];
         mapOfTopObjects = new TopObject[height][width];
+
+        goodFact = new GoodTileFactory(80);
+        badFact = new BadTileFactory(5);
     }
 
     public Coord initializeAndGetPlayer(BufferedReader reader) throws IOException {
@@ -52,16 +55,22 @@ public class Map {
             return null;
         if (mapOfTopObjects[i][j] instanceof FoundableObject foundable) {
             mapOfTopObjects[i][j] = null;
-            //System.out.println("found" + foundable.toString());
             return foundable;
         }
         return null;
     }
 
     private MapTile readMapTile(int c) {
-        if (c == GameSymbols.GOOD) return new Good();
-        else if (c == GameSymbols.BAD) return new Bad();
+        if (c == GameSymbols.GOOD) return goodFact.getNewMapTile();
+        else if (c == GameSymbols.BAD) return badFact.getNewMapTile();
         else return new Wall();
+    }
+
+    public int getPlayerHealthTileEffect(int x, int y) {
+        if (mapWithoutTopObjects[x][y] instanceof EmptyMapTile tile) {
+            return tile.getPlayerHealthImpact();
+        }
+        return 0;
     }
 
     public boolean isWallOrOutside(int i, int j) {
@@ -91,15 +100,15 @@ public class Map {
                         case north -> sb.append('T');
                         case east  -> sb.append('>');
                     }
-                    sb.append(' ');
+
                 } else if (mapWithoutTopObjects[i][j] instanceof NonEmptyMapTile) {
                     sb.append((char) GameSymbols.WALL);
-                    sb.append(' ');
                 } else if (mapOfTopObjects[i][j] instanceof Door) { //TODO
                     sb.append((char) GameSymbols.DOOR); //TODO remove, only for debug
                 } else {
-                    sb.append(". ");
+                    sb.append(".");
                 }
+                sb.append(' ');
             }
             sb.append("\n");
         }

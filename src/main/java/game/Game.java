@@ -114,7 +114,9 @@ public class Game {
             return;
         }
         handler.executeAction(handler.createAction(c));
-        NarratorsMouth.printUnsettlingMessage(p);
+        p.updateByCurrentTile(map);
+        if(p.shouldBeWorried())
+            NarratorsMouth.printUnsettlingMessage(p);
         phase = getNewGamePhase(p);
     }
 

@@ -48,15 +48,7 @@ public class CommandHandler {
                 catch (Exception e) {
                     return new InvalidAction(command);
                 }
-
-                switch (dir) {
-                    case left:
-                        return new MoveLeft(map, player);
-                    case right:
-                        return new MoveRight(map, player);
-                    default:
-                        return new MoveStraight(map, player);
-                }
+                return new Move(dir,map,player);
 
             default:
                 return new InvalidAction(command);

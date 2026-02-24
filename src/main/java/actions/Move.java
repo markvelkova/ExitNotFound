@@ -5,26 +5,26 @@ import toolkit.Player;
 import enums.Direction;
 import ui.NarratorsMouth;
 
-public class MoveRight extends Action {
+public class Move extends Action {
 
     private final Map map;
     private final Player player;
+    private final Direction dir;
 
-    public MoveRight(Map map, Player player) {
+    public Move(Direction dir, Map map, Player player) {
         this.map = map;
         this.player = player;
+        this.dir = dir;
     }
 
     @Override
     public boolean execute() {
-
-        if (player.move(Direction.right, map)) {
-            NarratorsMouth.movedRight();
+        if (player.move(dir, map)) {
+            NarratorsMouth.moved(dir);
         }
         else {
             NarratorsMouth.pathBlocked();
         }
-
         return true;
     }
 }

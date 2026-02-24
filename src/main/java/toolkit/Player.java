@@ -17,6 +17,7 @@ public class Player implements MovableMapObject, TopObject {
     private int health;
     private int numberOfUnsettlingMessagesHeard;
     private boolean foundTheDoorAndLeftTheGame;
+    private boolean currentTileBad;
     public PlayerState state;
     public FoundableObject objectFoundLastMove;
 
@@ -109,5 +110,15 @@ public class Player implements MovableMapObject, TopObject {
         } else {
             return false;
         }
+    }
+    public boolean shouldBeWorried() {
+        return (currentTileBad || health < 15);
+    }
+    public void updateByCurrentTile(Map map) {
+        int healthImpact = map.getPlayerHealthTileEffect(coord.y, coord.x);
+        currentTileBad = healthImpact < 0;
+        health += healthImpact;
+        if (health <= 0)
+            state = PlayerState.dead;
     }
 }

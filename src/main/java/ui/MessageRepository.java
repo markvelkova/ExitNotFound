@@ -8,7 +8,7 @@ public class MessageRepository {
     private static final Map<MessageKey, String> messages = Map.ofEntries(
 
             Map.entry(MessageKey.ERROR,
-                    "Unfortunately, this went kinda wrong, try again"),
+                    "Unfortunately, this went kinda wrong, try again\n"),
 
             Map.entry(MessageKey.ASK_NAME,
                     """
@@ -18,13 +18,13 @@ public class MessageRepository {
                     """),
 
             Map.entry(MessageKey.MOVED_LEFT,
-                    "You went left."),
+                    "You went left.\n"),
 
             Map.entry(MessageKey.MOVED_RIGHT,
-                    "You went right."),
+                    "You went right.\n"),
 
             Map.entry(MessageKey.MOVED_STRAIGHT,
-                    "You went straight."),
+                    "You went straight.\n"),
 
             Map.entry(MessageKey.WELCOME,
                     """
@@ -83,13 +83,13 @@ public class MessageRepository {
                     """),
 
             Map.entry(MessageKey.ANOTHER_GAME,
-                    "Do you want to send another hero in this dark hell?"),
+                    "Do you want to send another hero in this dark hell?\n"),
 
             Map.entry(MessageKey.WIN,
-                    "Congratulations %s! You won!"),
+                    "Congratulations %s! You won!\n"),
 
             Map.entry(MessageKey.FAILURE,
-                    "%s died in the darkness...\n\nrequiescat in pace"),
+                    "%s died in the darkness...\n\nrequiescat in pace\n\n"),
 
             Map.entry(MessageKey.PATH_BLOCKED,
                     """

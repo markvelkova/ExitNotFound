@@ -2,6 +2,7 @@ package ui;
 
 import commands.CommandScholar;
 import enums.CommandType;
+import enums.Direction;
 import enums.MessageKey;
 import maputils.interfaces.FoundableObject;
 import toolkit.Player;
@@ -30,15 +31,23 @@ public class NarratorsMouth {
         printAndFlush(MessageRepository.get(MessageKey.ASK_NAME));
     }
 
-    public static void movedLeft() {
+    public static void moved(Direction dir) {
+        switch(dir) {
+            case straight -> movedStraight();
+            case left -> movedLeft();
+            case right -> movedRight();
+        }
+    }
+
+    private static void movedLeft() {
         printAndFlush(MessageRepository.get(MessageKey.MOVED_LEFT));
     }
 
-    public static void movedRight() {
+    private static void movedRight() {
         printAndFlush(MessageRepository.get(MessageKey.MOVED_RIGHT));
     }
 
-    public static void movedStraight() {
+    private static void movedStraight() {
         printAndFlush(MessageRepository.get(MessageKey.MOVED_STRAIGHT));
     }
 
