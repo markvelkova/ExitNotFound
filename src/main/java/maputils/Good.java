@@ -1,10 +1,12 @@
 package maputils;
 
+import maputils.interfaces.AbstractDiscoverable;
+import maputils.interfaces.Discoverable;
 import maputils.interfaces.EmptyMapTile;
 
 import java.util.Random;
 
-public class Good implements EmptyMapTile {
+public class Good extends AbstractDiscoverable implements EmptyMapTile {
     private final int prob;
     private final Random rand = new Random();
     public Good(int prob) {

@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Map {
+    private MapConfig config;
+
     private GoodTileFactory goodFact;
     private BadTileFactory badFact;
     private MapTile[][] mapWithoutTopObjects;
@@ -15,39 +17,47 @@ public class Map {
     public final int height;
     public final int width;
 
-    public Map(int width, int height) {
+    public Map(int width, int height, MapConfig config) {
         this.width = width;
         this.height = height;
 
         mapWithoutTopObjects = new MapTile[height][width];
         mapOfTopObjects = new TopObject[height][width];
 
-        goodFact = new GoodTileFactory(80);
-        badFact = new BadTileFactory(5);
+        this.config = config;
+        goodFact = new GoodTileFactory(config.goodTileMaxProb);
+        badFact = new BadTileFactory(config.badTileMaxImpact);
     }
 
     public Coord initializeAndGetPlayer(BufferedReader reader) throws IOException {
         Coord result = new Coord(0,0);
-
         for (int i = 0; i < height; i++) {
             String line = reader.readLine();
             if (line == null) continue;
-
             for (int j = 0; j < width; j++) {
                 int newChar = line.charAt(j);
-
-                if (newChar == GameSymbols.PLAYER) {
-                    mapWithoutTopObjects[i][j] = readMapTile(GameSymbols.GOOD);
+                if (readTileAndSayIfPlayerFound(newChar, i, j)) {
                     result = new Coord(j, i);
-                } else if (newChar == GameSymbols.DOOR) {
-                    mapWithoutTopObjects[i][j] = readMapTile(GameSymbols.GOOD);
-                    mapOfTopObjects[i][j] = new Door();
-                } else {
-                    mapWithoutTopObjects[i][j] = readMapTile(newChar);
+                    mapWithoutTopObjects[i][j].discover();
                 }
             }
         }
         return result;
+    }
+
+    private boolean readTileAndSayIfPlayerFound(int newChar, int i, int j) {
+        if (GameSymbols.TILES.contains(newChar)) {
+            mapWithoutTopObjects[i][j] = readMapTile(newChar);
+        }
+        else if (GameSymbols.TOPS.contains(newChar)) {
+            mapWithoutTopObjects[i][j] = readMapTile(GameSymbols.GOOD);
+            mapOfTopObjects[i][j] = readTopObject(newChar);
+        } else if (newChar == GameSymbols.PLAYER) {
+            mapWithoutTopObjects[i][j] = readMapTile(GameSymbols.GOOD);
+            return true;
+        } else
+            throw new RuntimeException("MAP INVALID"); //TODO
+        return false;
     }
 
     public FoundableObject getFoundableObject(int i, int j) {
@@ -64,6 +74,14 @@ public class Map {
         if (c == GameSymbols.GOOD) return goodFact.getNewMapTile();
         else if (c == GameSymbols.BAD) return badFact.getNewMapTile();
         else return new Wall();
+    }
+    private TopObject readTopObject(int c) {
+        TopObject result = null;
+        switch (c){
+            case GameSymbols.DOOR -> result = new Door();
+            case GameSymbols.APPLE -> result = new Apple(config.appleBonus);
+        }
+        return result;
     }
 
     public int getPlayerHealthTileEffect(int x, int y) {
@@ -100,11 +118,10 @@ public class Map {
                         case north -> sb.append('T');
                         case east  -> sb.append('>');
                     }
-
+                } else if (!mapWithoutTopObjects[i][j].wasDiscovered()) {
+                    sb.append('%');
                 } else if (mapWithoutTopObjects[i][j] instanceof NonEmptyMapTile) {
                     sb.append((char) GameSymbols.WALL);
-                } else if (mapOfTopObjects[i][j] instanceof Door) { //TODO
-                    sb.append((char) GameSymbols.DOOR); //TODO remove, only for debug
                 } else {
                     sb.append(".");
                 }
@@ -113,6 +130,12 @@ public class Map {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public void discover(int x, int y) {
+        if (mapWithoutTopObjects[x][y] instanceof Discoverable discoverable) {
+            discoverable.discover();
+        }
     }
 
     public static class Coord {

@@ -101,7 +101,12 @@ public class NarratorsMouth {
     }
 
     public static void announceFindingObject(FoundableObject o) {
-        printAndFlush("You found " + o + "!\n");
+        printAndFlush(
+                MessageRepository.get(
+                        MessageKey.FOUND_OBJECT,
+                        o.toString()
+                )
+        );
     }
 
     public static void announceWin(Player p) {

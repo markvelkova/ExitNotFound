@@ -66,10 +66,8 @@ public class Player implements MovableMapObject, TopObject {
                 "----------------------------------------\n";
     }
 
-    public boolean move(Direction d, Map map) {
+    private Coord calculateNewDesiredPlayerPosition(Direction d) {
         int dx = 0, dy = 0;
-        FacingDirection newFacing = facing;
-
         switch (d) {
             case Direction.straight -> {
                 switch (facing) {
@@ -81,44 +79,84 @@ public class Player implements MovableMapObject, TopObject {
             }
             case Direction.left -> {
                 switch (facing) {
-                    case north -> { dx = -1; newFacing = FacingDirection.west; }
-                    case south -> { dx = 1;  newFacing = FacingDirection.east; }
-                    case east -> { dy = -1; newFacing = FacingDirection.north; }
-                    case west -> { dy = 1;  newFacing = FacingDirection.south; }
+                    case north -> dx = -1;
+                    case south -> dx = 1;
+                    case east -> dy = -1;
+                    case west -> dy = 1;
                 }
             }
             case Direction.right -> {
                 switch (facing) {
-                    case north -> { dx = 1;  newFacing = FacingDirection.east; }
-                    case south -> { dx = -1; newFacing = FacingDirection.west; }
-                    case east -> { dy = 1;  newFacing = FacingDirection.south; }
-                    case west -> { dy = -1; newFacing = FacingDirection.north; }
+                    case north -> dx = 1;
+                    case south -> dx = -1;
+                    case east -> dy = 1;
+                    case west -> dy = -1;
                 }
             }
         }
+        return new Coord(coord.x + dx, coord.y + dy);
+    }
+    private FacingDirection calculateNewFacingDirection(Direction d) {
+        FacingDirection newFacing = facing;
+        switch (d) {
+            case Direction.straight -> {}
+            case Direction.left -> {
+                switch (facing) {
+                    case north -> newFacing = FacingDirection.west;
+                    case south -> newFacing = FacingDirection.east;
+                    case east -> newFacing = FacingDirection.north;
+                    case west -> newFacing = FacingDirection.south;
+                }
+            }
+            case Direction.right -> {
+                switch (facing) {
+                    case north -> newFacing = FacingDirection.east;
+                    case south -> newFacing = FacingDirection.west;
+                    case east -> newFacing = FacingDirection.south;
+                    case west -> newFacing = FacingDirection.north;
+                }
+            }
+        }
+        return newFacing;
+    }
+    private void inspectTileForTopObjects(int x,int y, Map map) {
+        objectFoundLastMove = map.getFoundableObject(y, x);
+        if (objectFoundLastMove != null)
+            objectFoundLastMove.find(this);
+    }
 
-        int newX = coord.x + dx;
-        int newY = coord.y + dy;
-
-        if (!map.isWallOrOutside(newY, newX)) { // pozor, map indexuje opačně
-            objectFoundLastMove = map.getFoundableObject(newY, newX);
-            if (objectFoundLastMove != null)
-                objectFoundLastMove.find(this);
-            coord = new Coord(newX, newY);
-            facing = newFacing;
+    public boolean move(Direction d, Map map) {
+        Coord desired = calculateNewDesiredPlayerPosition(d);
+        map.discover(desired.y, desired.x);
+        if (!map.isWallOrOutside(desired.y, desired.x)) { // pozor, map indexuje opačně
+            inspectTileForTopObjects(desired.x,desired.y,map);
+            coord = desired;
+            facing = calculateNewFacingDirection(d);
             return true;
         } else {
             return false;
         }
     }
+
+    public boolean foundNewObject(){
+        return objectFoundLastMove != null;
+    }
+    public void useFoundObject() {
+        objectFoundLastMove = null;
+    }
+
     public boolean shouldBeWorried() {
         return (currentTileBad || health < 15);
     }
+
     public void updateByCurrentTile(Map map) {
         int healthImpact = map.getPlayerHealthTileEffect(coord.y, coord.x);
         currentTileBad = healthImpact < 0;
-        health += healthImpact;
+        updateHealth(healthImpact);
         if (health <= 0)
             state = PlayerState.dead;
+    }
+    public void updateHealth(int update) {
+        health += update;
     }
 }

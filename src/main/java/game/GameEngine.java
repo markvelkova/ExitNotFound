@@ -1,5 +1,7 @@
 package game;
 
+import maputils.MapConfig;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -21,9 +23,11 @@ public class GameEngine {
 
     public static void main(String[] args){
         boolean playAgain = true;
+        MapConfig gameConfig = new MapConfig(80,20,15);
         while(playAgain){
             Game game = new Game(
                     "mapa.txt",
+                    gameConfig,
                     new PrintWriter(System.out),
                     new BufferedReader(new InputStreamReader(System.in))
             );

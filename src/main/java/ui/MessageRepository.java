@@ -88,6 +88,9 @@ public class MessageRepository {
             Map.entry(MessageKey.WIN,
                     "Congratulations %s! You won!\n"),
 
+            Map.entry(MessageKey.FOUND_OBJECT,
+                    "You found %s.\n"),
+
             Map.entry(MessageKey.FAILURE,
                     "%s died in the darkness...\n\nrequiescat in pace\n\n"),
 

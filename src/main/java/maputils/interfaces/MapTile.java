@@ -1,4 +1,4 @@
 package maputils.interfaces;
 
-public interface MapTile {
+public interface MapTile extends Discoverable{
 }

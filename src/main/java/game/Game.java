@@ -7,6 +7,7 @@ import enums.CommandType;
 import enums.GamePhase;
 import enums.PlayerState;
 import maputils.Map;
+import maputils.MapConfig;
 import toolkit.GameLoaderAndSaver;
 import toolkit.Player;
 import ui.NarratorsEar;
@@ -23,13 +24,13 @@ public class Game {
     private boolean gameEnded;
     private boolean nextGameShouldBePlayed;
 
-    public Game(String mapFile, PrintWriter w, BufferedReader r){
+    public Game(String mapFile, MapConfig mapConfig, PrintWriter w, BufferedReader r){
         nextGameShouldBePlayed = false;
         phase = GamePhase.welcome;
         p = new Player("playerDefaultName",100);
 
         try(BufferedReader mr = new BufferedReader(new FileReader(mapFile))){
-            map = new Map(Integer.parseInt(mr.readLine()), Integer.parseInt(mr.readLine())); //TODO parsovat lepe, idealne v mape
+            map = new Map(Integer.parseInt(mr.readLine()), Integer.parseInt(mr.readLine()), mapConfig); //TODO parsovat lepe, idealne v mape
             p.setCoord(map.initializeAndGetPlayer(mr));
         } catch(Exception e) {
             throw new RuntimeException(e);
@@ -115,6 +116,10 @@ public class Game {
         }
         handler.executeAction(handler.createAction(c));
         p.updateByCurrentTile(map);
+        if(p.foundNewObject()) {
+            NarratorsMouth.announceFindingObject(p.objectFoundLastMove);
+            p.useFoundObject();
+        }
         if(p.shouldBeWorried())
             NarratorsMouth.printUnsettlingMessage(p);
         phase = getNewGamePhase(p);
