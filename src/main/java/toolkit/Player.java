@@ -1,6 +1,7 @@
 package toolkit;
 import enums.Direction;
 import enums.PlayerState;
+import maputils.interfaces.FoundableObject;
 import maputils.interfaces.MovableMapObject;
 import maputils.interfaces.TopObject;
 import maputils.Map.Coord;
@@ -17,6 +18,7 @@ public class Player implements MovableMapObject, TopObject {
     private int numberOfUnsettlingMessagesHeard;
     private boolean foundTheDoorAndLeftTheGame;
     public PlayerState state;
+    public FoundableObject objectFoundLastMove;
 
     public Player(String name, int health) {
         this.name = name;
@@ -27,8 +29,13 @@ public class Player implements MovableMapObject, TopObject {
         this.foundTheDoorAndLeftTheGame = false;
         this.state = PlayerState.playing;
     }
+    public boolean shouldLive() {
+        return health > 0;
+    }
     public boolean isFoundTheDoorAndLeftTheGame() { return this.foundTheDoorAndLeftTheGame; }
-
+    public void findDoor(){
+        foundTheDoorAndLeftTheGame = true;
+    }
     public String getPrintableStats() {
         return toString();
     }
@@ -93,6 +100,9 @@ public class Player implements MovableMapObject, TopObject {
         int newY = coord.y + dy;
 
         if (!map.isWallOrOutside(newY, newX)) { // pozor, map indexuje opačně
+            objectFoundLastMove = map.getFoundableObject(newY, newX);
+            if (objectFoundLastMove != null)
+                objectFoundLastMove.find(this);
             coord = new Coord(newX, newY);
             facing = newFacing;
             return true;
@@ -100,6 +110,4 @@ public class Player implements MovableMapObject, TopObject {
             return false;
         }
     }
-
-
 }

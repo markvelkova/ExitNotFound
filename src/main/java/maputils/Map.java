@@ -1,5 +1,6 @@
 package maputils;
 
+import maputils.interfaces.FoundableObject;
 import maputils.interfaces.MapTile;
 import maputils.interfaces.NonEmptyMapTile;
 import maputils.interfaces.TopObject;
@@ -46,6 +47,17 @@ public class Map {
         return result;
     }
 
+    public FoundableObject getFoundableObject(int i, int j) {
+        if (isWallOrOutside(i, j))
+            return null;
+        if (mapOfTopObjects[i][j] instanceof FoundableObject foundable) {
+            mapOfTopObjects[i][j] = null;
+            //System.out.println("found" + foundable.toString());
+            return foundable;
+        }
+        return null;
+    }
+
     private MapTile readMapTile(int c) {
         if (c == GameSymbols.GOOD) return new Good();
         else if (c == GameSymbols.BAD) return new Bad();
@@ -83,6 +95,8 @@ public class Map {
                 } else if (mapWithoutTopObjects[i][j] instanceof NonEmptyMapTile) {
                     sb.append((char) GameSymbols.WALL);
                     sb.append(' ');
+                } else if (mapOfTopObjects[i][j] instanceof Door) { //TODO
+                    sb.append((char) GameSymbols.DOOR); //TODO remove, only for debug
                 } else {
                     sb.append(". ");
                 }

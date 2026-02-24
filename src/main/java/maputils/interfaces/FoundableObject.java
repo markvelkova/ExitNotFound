@@ -1,6 +1,8 @@
 package maputils.interfaces;
 
+import toolkit.Player;
+
 public interface FoundableObject
 {
-    void find();
+    void find(Player p);
 }
