@@ -1,6 +1,6 @@
 package maputils.factories;
 
-import maputils.Bad;
+import maputils.tiles.Bad;
 
 import java.util.Random;
 

@@ -104,7 +104,7 @@ public class NarratorsMouth {
         printAndFlush(
                 MessageRepository.get(
                         MessageKey.FOUND_OBJECT,
-                        o.toString()
+                        o.getEndingOfFindingMessage()
                 )
         );
     }

@@ -54,14 +54,22 @@ public class Game {
                 NarratorsMouth.askAboutLoadingOldGame();
 
                 if(handler.executeAction(new Answer(NarratorsEar.getCommand())))
-                    phase = GamePhase.loading;
+                    phase = GamePhase.loading; //TODO: sem pridat nacteni mapy
                 else
-                    phase = GamePhase.nameAsking;
+                    phase = GamePhase.settingUp;
+            }
+            case settingUp -> {
+
+                phase = GamePhase.nameAsking;
             }
 
             case loading -> {
-                if(!tryLoadGame())
-                    handleFailedLoading();
+                if(tryLoadGame()) {
+                    phase = GamePhase.game;
+                } else {
+                    if (!handleFailedLoadingAndReturnIfShouldTryAgain())
+                        phase = GamePhase.nameAsking;
+                }
             }
 
             case nameAsking -> askForNameAndInitialize();
@@ -140,16 +148,14 @@ public class Game {
         if(file == null) return false;
         if(GameLoaderAndSaver.load(file,p)){
             NarratorsMouth.announceSuccessfulLoading();
-            phase = GamePhase.game;
             return true;
         }
         return false;
     }
 
-    public void handleFailedLoading(){
+    public Boolean handleFailedLoadingAndReturnIfShouldTryAgain(){
         NarratorsMouth.announceFailedLoading();
-        if (!handler.executeAction(new Answer(NarratorsEar.getCommand())))
-            phase = GamePhase.nameAsking;
+        return (handler.executeAction(new Answer(NarratorsEar.getCommand())));
     }
 
     public boolean trySaveGame(){

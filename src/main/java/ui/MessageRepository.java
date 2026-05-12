@@ -134,7 +134,7 @@ public class MessageRepository {
 
                     For loading:
                     type ok[enter]
-                    OR type file name/path including extension and press [enter]
+                    type file name/path including extension and press [enter]
 
                     For new game:
                     Press [enter]

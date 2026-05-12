@@ -23,6 +23,7 @@ public class DisplayMap extends Action {
         try {
             NarratorsMouth.printMap(map.getForDisplayWholeMap(player));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
         return true;

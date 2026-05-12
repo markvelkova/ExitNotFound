@@ -1,7 +1,6 @@
-package maputils;
+package maputils.tiles;
 
 import maputils.interfaces.AbstractDiscoverable;
-import maputils.interfaces.Discoverable;
 import maputils.interfaces.EmptyMapTile;
 
 public class Bad extends AbstractDiscoverable implements EmptyMapTile {
@@ -11,6 +10,7 @@ public class Bad extends AbstractDiscoverable implements EmptyMapTile {
     }
     @Override
     public int getPlayerHealthImpact() {
+        //System.out.println(healthImpact);
         return -healthImpact;
     }
 }

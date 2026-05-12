@@ -1,7 +1,6 @@
-package maputils;
+package maputils.tiles;
 
 import maputils.interfaces.AbstractDiscoverable;
-import maputils.interfaces.Discoverable;
 import maputils.interfaces.MapTile;
 import maputils.interfaces.NonEmptyMapTile;
 
