@@ -1,6 +1,8 @@
 package maputils.interfaces;
 
-public abstract class AbstractDiscoverable implements Discoverable {
+import java.io.Serializable;
+
+public abstract class AbstractDiscoverable implements Discoverable, Serializable {
 
     private boolean discovered = false;
 

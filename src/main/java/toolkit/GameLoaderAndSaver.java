@@ -1,8 +1,8 @@
 package toolkit;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import maputils.Map;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -69,6 +69,37 @@ public class GameLoaderAndSaver {
             return true;
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    public static boolean save2(String filename, Player player, Map map) {
+        if (filename == null || filename.isBlank()) {
+            filename = "coconut.mgtg";
+        }
+
+        GameState state = new GameState(player, map);
+
+        try (ObjectOutputStream out =
+                     new ObjectOutputStream(new FileOutputStream(filename))) {
+
+            out.writeObject(state);
+            return true;
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    public static GameState load2(String filename) { //TODO: fails
+        File file = new File(filename);
+        if (!file.exists()) return null;
+
+        try (ObjectInputStream in =
+                     new ObjectInputStream(new FileInputStream(file))) {
+            return (GameState) in.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            return null;
         }
     }
 }

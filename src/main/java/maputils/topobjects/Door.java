@@ -5,7 +5,9 @@ import maputils.interfaces.FoundableObject;
 import maputils.interfaces.TopObject;
 import toolkit.Player;
 
-public class Door implements FoundableObject, TopObject
+import java.io.Serializable;
+
+public class Door implements FoundableObject, TopObject, Serializable
 {
     @Override
     public String getEndingOfFindingMessage() {

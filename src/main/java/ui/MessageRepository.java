@@ -79,7 +79,7 @@ public class MessageRepository {
                     I mean game, ehm...
 
                     But do you want to end anyway?
-                    Are you sure you saved it?
+                    Are you sure you saved it? If yes, then confirm it by an ok :)
                     """),
 
             Map.entry(MessageKey.ANOTHER_GAME,

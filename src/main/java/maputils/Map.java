@@ -9,10 +9,10 @@ import maputils.topobjects.Door;
 import toolkit.Player;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Map {
+public class Map implements Serializable {
     private MapConfig config;
-
     private GoodTileFactory goodFact;
     private BadTileFactory badFact;
     private MapTile[][] mapWithoutTopObjects;
@@ -141,7 +141,7 @@ public class Map {
         }
     }
 
-    public static class Coord {
+    public static class Coord implements Serializable{
         public final int x;
         public final int y;
         public Coord(int x, int y) { this.x = x; this.y = y; }

@@ -7,7 +7,9 @@ import maputils.interfaces.TopObject;
 import maputils.Map.Coord;
 import maputils.Map;
 
-public class Player implements MovableMapObject, TopObject {
+import java.io.Serializable;
+
+public class Player implements MovableMapObject, TopObject, Serializable {
 
     public enum FacingDirection {west, north, east, south}
 

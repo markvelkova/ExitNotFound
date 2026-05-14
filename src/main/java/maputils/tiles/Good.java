@@ -3,9 +3,10 @@ package maputils.tiles;
 import maputils.interfaces.AbstractDiscoverable;
 import maputils.interfaces.EmptyMapTile;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Good extends AbstractDiscoverable implements EmptyMapTile {
+public class Good extends AbstractDiscoverable implements EmptyMapTile, Serializable {
     private final int prob;
     private final Random rand = new Random();
     public Good(int prob) {

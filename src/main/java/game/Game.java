@@ -9,6 +9,7 @@ import enums.PlayerState;
 import maputils.Map;
 import maputils.MapConfig;
 import toolkit.GameLoaderAndSaver;
+import toolkit.GameState;
 import toolkit.Player;
 import ui.NarratorsEar;
 import ui.NarratorsMouth;
@@ -19,8 +20,8 @@ public class Game {
 
     private Player p;
     private GamePhase phase;
-    private final Map map;
-    private final CommandHandler handler;
+    private Map map;
+    private CommandHandler handler;
     private boolean gameEnded;
     private boolean nextGameShouldBePlayed;
 
@@ -30,7 +31,7 @@ public class Game {
         p = new Player("playerDefaultName",100);
 
         try(BufferedReader mr = new BufferedReader(new FileReader(mapFile))){
-            map = new Map(Integer.parseInt(mr.readLine()), Integer.parseInt(mr.readLine()), mapConfig); //TODO parsovat lepe, idealne v mape
+            map = new Map(Integer.parseInt(mr.readLine()), Integer.parseInt(mr.readLine()), mapConfig);
             p.setCoord(map.initializeAndGetPlayer(mr));
         } catch(Exception e) {
             throw new RuntimeException(e);
@@ -56,23 +57,23 @@ public class Game {
                 if(handler.executeAction(new Answer(NarratorsEar.getCommand())))
                     phase = GamePhase.loading; //TODO: sem pridat nacteni mapy
                 else
-                    phase = GamePhase.settingUp;
-            }
-            case settingUp -> {
-
-                phase = GamePhase.nameAsking;
+                    phase = GamePhase.nameAsking;
             }
 
             case loading -> {
                 if(tryLoadGame()) {
-                    phase = GamePhase.game;
+                    NarratorsMouth.announceSuccessfulLoading();
+                    requestTutorial();
                 } else {
                     if (!handleFailedLoadingAndReturnIfShouldTryAgain())
                         phase = GamePhase.nameAsking;
                 }
             }
 
-            case nameAsking -> askForNameAndInitialize();
+            case nameAsking -> {
+                askForName();
+                requestTutorial();
+            }
 
             case tutorial -> giveTutorial();
 
@@ -96,8 +97,10 @@ public class Game {
             }
 
             case exited -> {
-                exitGame();
-                gameEnded = true;
+                if (shouldGameBeExited())
+                    gameEnded = true;
+                else
+                    phase = GamePhase.game;
             }
         }
     }
@@ -112,7 +115,7 @@ public class Game {
         return GamePhase.game;
     }
 
-    public void playRound(){
+    private void playRound(){
         Command c = NarratorsEar.getCommand();
         if(c.getType() == CommandType.exit){
             phase = GamePhase.exited;
@@ -133,7 +136,7 @@ public class Game {
         phase = getNewGamePhase(p);
     }
 
-    public void welcome(){
+    private void welcome(){
         NarratorsMouth.welcome();
         NarratorsMouth.askAboutLoadingOldGame();
 
@@ -143,24 +146,28 @@ public class Game {
             phase = GamePhase.nameAsking;
     }
 
-    public boolean tryLoadGame(){
+    private boolean tryLoadGame(){
         String file = NarratorsEar.getLine();
         if(file == null) return false;
-        if(GameLoaderAndSaver.load(file,p)){
-            NarratorsMouth.announceSuccessfulLoading();
+        GameState state = GameLoaderAndSaver.load2(file);
+
+        if (state != null){
+            p = state.getPlayer();
+            map = state.getMap();
+            handler = new CommandHandler(p, map);
             return true;
         }
         return false;
     }
 
-    public Boolean handleFailedLoadingAndReturnIfShouldTryAgain(){
+    private Boolean handleFailedLoadingAndReturnIfShouldTryAgain(){
         NarratorsMouth.announceFailedLoading();
         return (handler.executeAction(new Answer(NarratorsEar.getCommand())));
     }
 
-    public boolean trySaveGame(){
+    private boolean trySaveGame(){
         NarratorsMouth.saySavingInstruction();
-        if (GameLoaderAndSaver.save(NarratorsEar.getLine(),p)){
+        if (GameLoaderAndSaver.save2(NarratorsEar.getLine(),p,map)){
             NarratorsMouth.announceSuccessfulSaving();
             NarratorsMouth.backInTheGame();
             phase = GamePhase.game;
@@ -169,7 +176,7 @@ public class Game {
         return false;
     }
 
-    public void handleFailedSaving(){
+    private void handleFailedSaving(){
         NarratorsMouth.announceFailedSaving();
         if(!handler.executeAction(new Answer(NarratorsEar.getCommand()))){
             NarratorsMouth.backInTheGame();
@@ -177,9 +184,12 @@ public class Game {
         }
     }
 
-    public void askForNameAndInitialize(){
+    private void askForName(){
         NarratorsMouth.askForName();
         p.setName(NarratorsEar.getLine());
+    }
+
+    private void requestTutorial(){
         NarratorsMouth.askAboutTutorial(p);
         if(handler.executeAction(new Answer(NarratorsEar.getCommand())))
             phase = GamePhase.tutorial;
@@ -187,20 +197,17 @@ public class Game {
             phase = GamePhase.game;
     }
 
-    public void giveTutorial(){
+    private void giveTutorial(){
         NarratorsMouth.giveTutorial();
         phase = GamePhase.game;
     }
 
-    public void exitGame(){
+     private Boolean shouldGameBeExited(){
         NarratorsMouth.askForEndConfirmation();
-        if(handler.executeAction(new Answer(NarratorsEar.getCommand())))
-            gameEnded = true;
-        else
-            phase = GamePhase.game;
+        return handler.executeAction(new Answer(NarratorsEar.getCommand()));
     }
 
-    public boolean askIfAnotherGameIsWanted(){
+    private boolean askIfAnotherGameIsWanted(){
         NarratorsMouth.askForAnotherGame();
         return handler.executeAction(new Answer(NarratorsEar.getCommand()));
     }

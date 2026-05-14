@@ -1,6 +1,8 @@
 package maputils;
 
-public class MapConfig {
+import java.io.Serializable;
+
+public class MapConfig implements Serializable {
     public final int goodTileMaxProb;
     public final int badTileMaxImpact;
     public final int appleBonus;
