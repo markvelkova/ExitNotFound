@@ -2,8 +2,24 @@ package commands;
 
 import enums.CommandType;
 
+/**
+ * Provides information about available game commands and their usage.
+ *
+ * This utility class contains static methods to retrieve detailed descriptions
+ * of each command type, including their parameters and effects. It also determines
+ * which commands players are allowed to use.
+ */
 public class CommandScholar {
 
+    /**
+     * Retrieves detailed documentation and usage information for a specific command.
+     *
+     * This method returns a formatted string containing the command name, parameters,
+     * and effect description that helps the player understand how to use the command.
+     *
+     * @param type the command type to get information for
+     * @return a formatted string describing the command, its parameters, and effects
+     */
     public static String getCommandInfo(CommandType type) {
         switch (type) {
             case ok:
@@ -67,6 +83,15 @@ public class CommandScholar {
         }
     }
 
+    /**
+     * Determines whether a command is available for player use.
+     *
+     * Not all command types are available to players; some are reserved for internal use.
+     * This method validates whether a given command type can be used in normal gameplay.
+     *
+     * @param t the command type to check
+     * @return true if the player can use this command, false if it's restricted
+     */
     public static boolean userCanUseThisCommand(CommandType t) {
         switch (t) {
             case ok:
@@ -82,4 +107,3 @@ public class CommandScholar {
         }
     }
 }
-

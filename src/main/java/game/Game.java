@@ -16,6 +16,12 @@ import ui.NarratorsMouth;
 
 import java.io.*;
 
+/**
+ * Main game controller that manages game state transitions and overall flow.
+ * This class orchestrates the entire game lifecycle, managing phases from welcome
+ * through gameplay to win/loss conditions. It handles transitions between phases,
+ * coordinates with the UI system, manages saving/loading, and coordinates player
+ * updates with the map and command system. */
 public class Game {
 
     private Player p;
@@ -25,6 +31,12 @@ public class Game {
     private boolean gameEnded;
     private boolean nextGameShouldBePlayed;
 
+    /**
+     * Constructs a new game with the specified map file and configuration.
+     * @param mapFile the path to the map file to load
+     * @param mapConfig the configuration for map generation
+     * @param w the output writer for game messages
+     * @param r the input reader for player commands     */
     public Game(String mapFile, MapConfig mapConfig, PrintWriter w, BufferedReader r){
         nextGameShouldBePlayed = false;
         phase = GamePhase.welcome;
@@ -41,13 +53,26 @@ public class Game {
         handler = new CommandHandler(p,map);
     }
 
+    /**
+     * Checks whether the current game has ended.
+     * @return true if the game is finished (either won, lost, or exited), false if still playing     */
     public boolean isGameEnded(){
         return gameEnded;
     }
+    /**
+     * Determines whether the player wants to play another game.
+     * After a game ends (win or loss), the player is asked if they want to play again.
+     * This method returns that decision.
+     * @return true if the player wants to play another game, false otherwise     */
     public boolean isNextGameShouldBePlayed() {
         return nextGameShouldBePlayed;
     }
 
+    /**
+     * Processes the current game phase and advances to the next appropriate phase.
+     * This method is called repeatedly during the game loop. It handles all logic
+     * for the current phase, including user interaction, game state updates, and
+     * phase transitions. It's the main entry point for game progress.     */
     public void update(){
         switch(phase){
             case welcome -> {
@@ -55,7 +80,7 @@ public class Game {
                 NarratorsMouth.askAboutLoadingOldGame();
 
                 if(handler.executeAction(new Answer(NarratorsEar.getCommand())))
-                    phase = GamePhase.loading; //TODO: sem pridat nacteni mapy
+                    phase = GamePhase.loading;
                 else
                     phase = GamePhase.nameAsking;
             }
@@ -115,6 +140,7 @@ public class Game {
         return GamePhase.game;
     }
 
+    /**     Plays a single round of the game, processing player commands.     */
     private void playRound(){
         Command c = NarratorsEar.getCommand();
         if(c.getType() == CommandType.exit){
@@ -135,7 +161,6 @@ public class Game {
             NarratorsMouth.printUnsettlingMessage(p);
         phase = getNewGamePhase(p);
     }
-
     private void welcome(){
         NarratorsMouth.welcome();
         NarratorsMouth.askAboutLoadingOldGame();
@@ -146,6 +171,9 @@ public class Game {
             phase = GamePhase.nameAsking;
     }
 
+    /**
+     * Attempts to load a saved game from file.
+     * @return true if loading was successful, false otherwise     */
     private boolean tryLoadGame(){
         String file = NarratorsEar.getLine();
         if(file == null) return false;
@@ -165,6 +193,9 @@ public class Game {
         return (handler.executeAction(new Answer(NarratorsEar.getCommand())));
     }
 
+    /**
+     * Attempts to save the current game to file.
+     * @return true if saving was successful, false otherwise     */
     private boolean trySaveGame(){
         NarratorsMouth.saySavingInstruction();
         if (GameLoaderAndSaver.save2(NarratorsEar.getLine(),p,map)){

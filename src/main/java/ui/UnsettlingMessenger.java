@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Provides random atmospheric messages to create suspense during gameplay.
+ * This utility class maintains a collection of unsettling or atmospheric messages
+ * that are displayed to the player at strategic moments (such as when on dangerous
+ * tiles or with low health) to create an immersive game atmosphere. */
 public class UnsettlingMessenger
 {
+    /**
+     * Generates and returns a list of unsettling messages.
+     * @return an ArrayList containing all available unsettling messages     */
     private static ArrayList<String> generateListOfUnsettlingMessages()
     {
-
         ArrayList<String> list = new ArrayList<>(Arrays.asList(
                 """
                 Ugh, was that a spider?
@@ -65,6 +72,11 @@ public class UnsettlingMessenger
         return list;
 
     }
+    /**
+     * Returns a randomly selected unsettling atmospheric message.
+     * This method generates the message pool and returns one random message each time
+     * it's called, providing variety in atmospheric feedback during gameplay.
+     * @return a random unsettling message string     */
     public static String getUnsettlingMesssage()
     {
         ArrayList <String> unsettlingMessages = generateListOfUnsettlingMessages();

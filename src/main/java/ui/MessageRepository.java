@@ -3,6 +3,11 @@ package ui;
 import java.util.Map;
 import enums.MessageKey;
 
+/** Central repository for all user-facing messages and text in the game.
+ * This class stores localized message templates indexed by MessageKey. All text
+ * displayed to the player is retrieved from this repository, allowing for easy
+ * maintenance and potential future localization. Messages can include format placeholders
+ * for dynamic content like player names. */
 public class MessageRepository {
 
     private static final Map<MessageKey, String> messages = Map.ofEntries(
@@ -174,6 +179,15 @@ public class MessageRepository {
                     """)
     );
 
+    /**
+     * Retrieves a message template by key and optionally formats it with arguments.
+     * This method looks up a message definition by its key. If additional arguments are
+     * provided, they are used to format the message using String.format(), allowing
+     * for dynamic content insertion (e.g., player names).
+     * @param key the MessageKey identifying which message to retrieve
+     * @param args optional format arguments for the message template
+     * @return the formatted message string, or "Message not found" if the key is missing
+     * */
     public static String get(MessageKey key, Object... args) {
 
         String msg = messages.getOrDefault(key, "Message not found");

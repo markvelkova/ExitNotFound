@@ -1,5 +1,11 @@
 package enums;
 
+/**
+ * Enumeration of all message keys used for localized text display.
+ *
+ * Each key corresponds to a message template stored in MessageRepository,
+ * allowing for centralized management of all user-facing text in the game.
+ */
 public enum MessageKey {
     ERROR,
     ASK_NAME,
