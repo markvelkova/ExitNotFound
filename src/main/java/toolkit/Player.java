@@ -95,6 +95,14 @@ public class Player implements MovableMapObject, TopObject, Serializable {
                     case west -> dy = -1;
                 }
             }
+            case Direction.back -> {
+                switch (facing) {
+                    case north -> dy = 1;
+                    case south -> dy = -1;
+                    case east -> dx = -1;
+                    case west -> dx = 1;
+                }
+            }
         }
         return new Coord(coord.x + dx, coord.y + dy);
     }
@@ -116,6 +124,14 @@ public class Player implements MovableMapObject, TopObject, Serializable {
                     case south -> newFacing = FacingDirection.west;
                     case east -> newFacing = FacingDirection.south;
                     case west -> newFacing = FacingDirection.north;
+                }
+            }
+            case Direction.back -> {
+                switch (facing) {
+                    case north -> newFacing = FacingDirection.south;
+                    case south -> newFacing = FacingDirection.north;
+                    case east -> newFacing = FacingDirection.west;
+                    case west -> newFacing = FacingDirection.east;
                 }
             }
         }

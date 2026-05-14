@@ -6,6 +6,7 @@ public enum MessageKey {
     MOVED_LEFT,
     MOVED_RIGHT,
     MOVED_STRAIGHT,
+    MOVED_BACK,
     WELCOME,
     ASK_TUTORIAL,
     TUTORIAL_INTRO,

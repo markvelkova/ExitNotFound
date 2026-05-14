@@ -36,6 +36,7 @@ public class NarratorsMouth {
             case straight -> movedStraight();
             case left -> movedLeft();
             case right -> movedRight();
+            case back -> movedBack();
         }
     }
 
@@ -49,6 +50,10 @@ public class NarratorsMouth {
 
     private static void movedStraight() {
         printAndFlush(MessageRepository.get(MessageKey.MOVED_STRAIGHT));
+    }
+
+    private static void movedBack() {
+        printAndFlush(MessageRepository.get(MessageKey.MOVED_BACK));
     }
 
     public static void welcome() {

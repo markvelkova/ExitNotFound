@@ -25,6 +25,8 @@ public class MessageRepository {
 
             Map.entry(MessageKey.MOVED_STRAIGHT,
                     "You went straight.\n"),
+            Map.entry(MessageKey.MOVED_BACK,
+                    "You went back... Cowardish\n"),
 
             Map.entry(MessageKey.WELCOME,
                     """

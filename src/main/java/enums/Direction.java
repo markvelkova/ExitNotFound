@@ -1,3 +1,3 @@
 package enums;
 
-public enum Direction {left, straight, right};
+public enum Direction {left, straight, right, back};
