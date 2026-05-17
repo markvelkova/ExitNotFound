@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <TITLE>API Overview</TITLE>
+</HEAD>
+<BODY>
+<h1>Exit Not Found</h1>
+
+<h2>Overview</h2>
+<p>
+    Exit Not Found is a  text-based adventure with basic game mechanics, and simple persistence.
+    The player explores a grid-like map, discovers items and a goal (the exit door), and must
+    manage health while navigating hazards.
+</p>
+
+<h2>Implementation Summary</h2>
+<p>
+    The implementation uses an explicit map model that stores tile types and optional top-level objects.
+    Players are represented by a <code>Player</code> object tracking position, facing direction,
+    health and game state. Commands are parsed into a small command model and dispatched to action
+    implementations, which encapsulate behaviour such as movement, displaying the map, or saving/loading.
+    Persistence is provided via Java serialization for a simple, versioned game state snapshot.
+</p>
+
+<h2>Main Components and Packages</h2>
+<ul>
+    <li><code>game</code> — core engine and game loop coordinating phases and player input.</li>
+    <li><code>maputils</code> — map model, tile and top-object interfaces, factories and utilities for parsing/printing maps.</li>
+    <li><code>actions</code> — concrete action implementations invoked by commands.</li>
+    <li><code>commands</code> — parsing, validation and help text for user commands.</li>
+    <li><code>toolkit</code> — helpers for saving/loading game state and other utilities.</li>
+    <li><code>ui</code> — message repository and simple I/O adapters used by the engine.</li>
+</ul>
+
+<h2>How to run the game</h2>
+<pre><code>mvn exec:java</code></pre>
+<p>
+    The game will start in the console, and you can interact with it using text commands. The default map used for new games is specified in <code>mapa.txt</code> file and can be changed using the symbols defined in <code>maputils/GameSymbols.java</code>. The first line defines number of collumns, the second number of rows.
+</p>
+
+<h2>How to regenerate the API documentation</h2>
+<pre><code>mvn clean javadoc:javadoc</code></pre>
+<p>
+    The generated documentation will appear under <code>target/site/apidocs</code>.
+</p>
+</BODY>
+</HTML>
