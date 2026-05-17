@@ -55,7 +55,7 @@ public class CommandScholar {
             case go:
                 return """
                         go
-                        parameters: left/right/straight
+                        parameters: left/right/straight/back
                         effect: moves you in the desired direction
                         
                         """;
