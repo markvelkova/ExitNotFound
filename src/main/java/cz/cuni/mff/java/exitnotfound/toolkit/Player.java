@@ -315,8 +315,8 @@ public class Player implements MovableMapObject, TopObject, Serializable {
      */
     public boolean move(Direction d, Map map) {
         Coord desired = calculateNewDesiredPlayerPosition(d);
-        map.discover(desired.y, desired.x);
         if (!map.isWallOrOutside(desired.y, desired.x)) { // pozor, map indexuje opačně
+            map.discover(desired.y, desired.x);
             inspectTileForTopObjects(desired.x,desired.y,map);
             coord = desired;
             facing = calculateNewFacingDirection(d);
